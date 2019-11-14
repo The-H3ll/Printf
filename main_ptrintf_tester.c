@@ -6,7 +6,7 @@
 /*   By: molabhai <molabhai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 21:15:57 by molabhai          #+#    #+#             */
-/*   Updated: 2019/11/13 03:17:07 by molabhai         ###   ########.fr       */
+/*   Updated: 2019/11/14 05:14:46 by molabhai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,5 +206,47 @@ int		main(void)
 	fprintf(file, "test with flags [-] signed int %-10dd signed int2 %-8dd unsigned int %-uu string %-20ss%-10c%cc%-10cc%-20pp\n", hexa, hexa1, nam, s, c, c, c, s);
 	ft_printf("test with flags [-] signed int %-10dd signed int2 %-8dd unsigned int %-uu string %-20ss%-10c%cc%-10cc%-20pp\n", hexa, hexa1, nam, s, c, c, c, s);
 	
+	fprintf(file, "test with flags [-] signed int %-10dd signed int2 %-8dd unsigned int %-uuu string %-20ss%-10c%cc%-10c c%-100pp%p\n", hexa, hexa1, nam, s, c, c, c, s, s);
+	ft_printf("test with flags [-] signed int %-10dd signed int2 %-8dd unsigned int %-uuu string %-20ss%-10c%cc%-10c c%-100pp%p\n", hexa, hexa1, nam, s, c, c, c, s, s);
+
+	fprintf(file, "test with flags [*] and [0] %0*d\n", 0, hexa);
+	ft_printf("test with flags [*] and [0] %0*d\n", 0, hexa);
+
+	fprintf(file, "test with flags [*] and [0] %0*d\n", 1, hexa);
+	ft_printf("test with flags [*] and [0] %0*d\n", 1, hexa);
+	
+	fprintf(file, "test with flags [*] and [0] %0*d\n", 5, hexa);
+	ft_printf("test with flags [*] and [0] %0*d\n", 5, hexa);
+
+	fprintf(file, "test with flags [*] and [0] %0*dd\n", 5, hexa);
+	ft_printf("test with flags [*] and [0] %0*dd\n", 5, hexa);
+
+	fprintf(file, "test with flags [*] and [0] %0*dd%0*d\n", 10, hexa, 1, hexa1);
+	ft_printf("test with flags [*] and [0] %0*dd%0*d\n", 10, hexa, 1, hexa1);
+
+	fprintf(file, "test with flags [*] and [0] %0*u\n", 1, nam);
+	ft_printf("test with flags [*] and [0] %0*u\n", 1, nam);
+	
+	fprintf(file, "test with flags [*] and [0] %0*u\n", 10, nam);
+	ft_printf("test with flags [*] and [0] %0*u\n", 10, nam);
+	
+	fprintf(file, "test with flags [*] and [0] %0*dd\n", 200, nam);
+	ft_printf("test with flags [*] and [0] %0*dd\n", 200, nam);
+
+	fprintf(file, "test with flags [*] and [0] %0*dd\n", 1, hexa1);
+	ft_printf("test with flags [*] and [0] %0*dd\n", 1, hexa1);
+
+	fprintf(file, "test with flags [*] and [0] %0*dd\n", 10, hexa1);
+	ft_printf("test with flags [*] and [0] %0*dd\n", 10, hexa1);
+	
+	fprintf(file, "test with flags [*] and [0] %0*dd\n", 100, hexa1);
+	ft_printf("test with flags [*] and [0] %0*dd\n", 100, hexa1);
+	
+	fprintf(file, "test with flags [*] and [0] %0*dd\n", 200, hexa1);
+	ft_printf("test with flags [*] and [0] %0*dd\n", 200, hexa1);
+
+	fprintf(file, "test with flags [*] and [0] %0*dd%010d\n", 10, hexa, hexa1);
+	ft_printf("test with flags [*] and [0] %0*dd%010d\n", 10, hexa, hexa1);
+
 	return (0);
 }

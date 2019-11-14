@@ -6,27 +6,27 @@
 /*   By: molabhai <molabhai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/09 21:08:51 by molabhai          #+#    #+#             */
-/*   Updated: 2019/11/13 01:16:53 by molabhai         ###   ########.fr       */
+/*   Updated: 2019/11/14 02:51:59 by molabhai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		flag_zero(char *s, int i, va_list ap, char *str, int len)
+int		flag_zero(char *s, int i, va_list ap, char *str, t_num nmbr)
 {
 	int str_len;
-	long num;
 	int only_numbers;
 	int j;
 	int k;
 
 	only_numbers = 0;
-	str_len = len;
+	str_len = nmbr.len;
 	j = i;
 	while (ft_isdigit(s[j]) != 0)
 		j++;
 	k = j - i + 1;
-	num  = ft_atoi(ft_substr(s, i, j - 1));
+	if (nmbr.only_numbers == 0)
+		nmbr.only_numbers = ft_atoi(ft_substr(s, i, j - 1));
 	if (s[j] == 'x' || s[j] == 'X')
 		str_len -= 1;
 	if (s[j] == 'p')
@@ -34,17 +34,17 @@ int		flag_zero(char *s, int i, va_list ap, char *str, int len)
 	if (str[0] == '-')
 		str_len += 1;
 	only_numbers = ft_atoi(str);
-	if (num <= str_len)
+	if (nmbr.only_numbers <= str_len)
 	{
 		just_converting_int(s, j, ap, 0, only_numbers, 0);
 		return(k + 2);
 	}
 	if (str[0] == '-')
 		write(1, "-", 1);
-	while (num > str_len)
+	while (nmbr.only_numbers > str_len)
 	{
 		write(1, "0", 1);
-		num--;
+		nmbr.only_numbers--;
 	}
 	if (str[0] == '-')
 		just_converting_int(s, j, ap, 0, only_numbers, 1);
@@ -53,15 +53,16 @@ int		flag_zero(char *s, int i, va_list ap, char *str, int len)
 	return (k + 2);
 }
 
-int		left_flag(char *s, int i, va_list ap, int len, char *str)
+int		left_flag(char *s, int i, va_list ap, t_num kx, char *str)
 {
 	int j;
 	int	number_take;
-	long	take_arg;
+	unsigned long	take_arg;
 	int k;
-	
+
 	j = i;
 	take_arg = 0;
+
 	while (ft_isdigit(s[j]) != 0)
 		j++;
 	k = j - i + 1;
@@ -72,15 +73,17 @@ int		left_flag(char *s, int i, va_list ap, int len, char *str)
 		just_converting_int(s, j, ap, 0, take_arg, 0);
 		number_take -= 1;
 	}
-	else if (s[j] != 'c')
+	else if (s[j] != 'c' && s[j] != 'p')
 	{
 		take_arg = ft_atoi(str);
 		just_converting_int(s, j, ap, 0, take_arg, 0);
 	}
+	else if (s[j] == 'p')
+		just_converting_int(s, j, ap, 0, kx.ul_num, 0);
 	just_converting_char(s, j, ap, str);
-	if (number_take <= len)
+	if (number_take <= kx.len)
 		return (k + 2);
-	while (number_take > len)
+	while (number_take > kx.len)
 	{
 		write(1, " ", 1);
 		number_take--;

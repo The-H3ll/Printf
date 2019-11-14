@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: molabhai <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: molabhai <molabhai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/06 20:43:55 by molabhai          #+#    #+#              #
-#    Updated: 2019/11/09 21:51:36 by molabhai         ###   ########.fr        #
+#    Updated: 2019/11/13 17:38:26 by molabhai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ HEADER = ./libft/libft.h
 PRINTFHEADER = ft_printf.h 
 
 PRINTFSRC = ft_printf.c conversion_type.c convert_to_hexa.c conversion_unsigned_type.c \
-			only_flags.c
+			only_flags.c utils_for_printf.c
 
 PRINTFOBJ = $(PRINTFSRC:.c=.o)
 
