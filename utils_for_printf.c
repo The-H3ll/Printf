@@ -6,11 +6,26 @@
 /*   By: molabhai <molabhai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 17:18:23 by molabhai          #+#    #+#             */
-/*   Updated: 2019/11/13 23:46:17 by molabhai         ###   ########.fr       */
+/*   Updated: 2019/11/15 23:59:49 by molabhai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+
+int       check_for_dot(char *s, int i)
+{
+    int j;
+
+    j = i;
+    while (s[i] != '\0')
+    {
+        if (s[i] == '.')
+            return (1);
+        i++;
+    }
+    return (0);
+}
 
 int       check_for_star(char *s, int i)
 {

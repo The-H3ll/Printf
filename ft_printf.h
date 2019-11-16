@@ -6,7 +6,7 @@
 /*   By: molabhai <molabhai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 18:06:12 by molabhai          #+#    #+#             */
-/*   Updated: 2019/11/14 03:15:07 by molabhai         ###   ########.fr       */
+/*   Updated: 2019/11/16 06:50:12 by molabhai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef     struct      s_numbers
     long  l_num;
     unsigned long ul_num;
     int len;
+    int dot_flag;
 }                       t_num;
 
 int     check_for_star(char *s, int i);
@@ -46,5 +47,12 @@ int     just_converting_int(char *s, int i, va_list ap, int j, long d, int z);
 int		left_flag(char *s, int i, va_list ap, t_num len, char *str);
 int		just_converting_char(char *s, int i, va_list ap, char *str);
 char    *ul_itoi(unsigned long number);
+int      width_flags(char *s, int i, va_list ap, t_num nmbr, char *str);
+int     check_for_dot(char *s, int i);
+int     for_digit_flag(char *s, int i, va_list ap, t_num number);
+int     for_left_flag(char *s, int i, va_list ap, t_num nmbr);
+int		check_for_convertion(char *s, int i);
+int     for_zero_flag(char *s, int i, va_list ap, t_num num);
+int		dot_flag(char *s, int i, va_list ap, t_num nmbr);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: molabhai <molabhai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/08 13:22:03 by molabhai          #+#    #+#             */
-/*   Updated: 2019/11/13 17:11:20 by molabhai         ###   ########.fr       */
+/*   Updated: 2019/11/14 22:58:59 by molabhai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static char		return_hex_big(int mod_hexa)
 	return (0);
 }
 
-int		hexa_conversion_min(unsigned int hexa)
+int		hexa_conversion_min(unsigned int  hexa)
 {
 	int mod_hexa;
 	char *s;
