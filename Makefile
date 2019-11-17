@@ -6,7 +6,7 @@
 #    By: molabhai <molabhai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/06 20:43:55 by molabhai          #+#    #+#              #
-#    Updated: 2019/11/16 00:29:24 by molabhai         ###   ########.fr        #
+#    Updated: 2019/11/17 11:12:48 by molabhai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ HEADER = ./libft/libft.h
 PRINTFHEADER = ft_printf.h 
 
 PRINTFSRC = ft_printf.c conversion_type.c convert_to_hexa.c conversion_unsigned_type.c \
-			only_flags.c utils_for_printf.c flag_helper.c
+			only_flags.c utils_for_printf.c flag_helper.c dot_flag.c
 
 PRINTFOBJ = $(PRINTFSRC:.c=.o)
 

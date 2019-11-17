@@ -6,7 +6,7 @@
 /*   By: molabhai <molabhai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/16 00:17:48 by molabhai          #+#    #+#             */
-/*   Updated: 2019/11/16 07:03:11 by molabhai         ###   ########.fr       */
+/*   Updated: 2019/11/17 17:25:00 by molabhai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,4 +184,33 @@ int		for_zero_flag(char *s, int i, va_list ap, t_num nmbr)
 	if (j == 1)
 		flag_num += 1;
 	return (flag_num);
+}
+
+t_num		for_dot_flag(char *s, int i, va_list ap, t_num nmbr)
+{
+	int who;
+
+	who = 0;
+	who = check_for_convertion(s, i);
+	nmbr.only_numbers = 0;
+	if (who == 1)
+	{
+		nmbr.only_numbers = va_arg(ap, int);
+		nmbr.len = nmbr_count(nmbr.only_numbers);
+	}
+	else if (who == 2)
+	{
+		nmbr.only_numbers = va_arg(ap, long);
+		nmbr.len = nmbr_count(nmbr.only_numbers);
+	}
+	else if (who == 3 || who == 4)
+	{
+		nmbr.only_numbers= va_arg(ap, unsigned int );
+		nmbr.len = nmbr_count(nmbr.only_numbers);
+		if (nmbr.len == 10)
+			nmbr.len -= 2;
+		else
+			nmbr.len -= 1;
+	}
+	return (nmbr);
 }

@@ -6,7 +6,7 @@
 /*   By: molabhai <molabhai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 16:21:45 by molabhai          #+#    #+#             */
-/*   Updated: 2019/11/16 08:24:42 by molabhai         ###   ########.fr       */
+/*   Updated: 2019/11/17 15:36:12 by molabhai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,18 +164,23 @@ int		ft_printf(const char *s, ...)
 	while (s[i] != '\0')
 	{	
 		if (s[i] == '%')
+		{
 			i = if_flags((char *)s, i + 1, ap) + i;
+			k = k + i;
+		}
 		if (s[i] == '%')
 		{
 			i = just_converting_char((char *)s, i + 1, ap, NULL) + i;
 			i = just_converting_int((char *)s, i + 1, ap, 0, 0, 0) + i;
+			k = k + i;
 		}
 		if (s[i] != '%')
 		{
 			write(1, &s[i], 1);
 			i++;
+			k++;
 		}
 	}
 	va_end(ap);
-	return (j);
+	return (k);
 }

@@ -6,7 +6,7 @@
 /*   By: molabhai <molabhai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 18:06:12 by molabhai          #+#    #+#             */
-/*   Updated: 2019/11/16 06:50:12 by molabhai         ###   ########.fr       */
+/*   Updated: 2019/11/17 17:08:53 by molabhai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,9 @@ int     for_left_flag(char *s, int i, va_list ap, t_num nmbr);
 int		check_for_convertion(char *s, int i);
 int     for_zero_flag(char *s, int i, va_list ap, t_num num);
 int		dot_flag(char *s, int i, va_list ap, t_num nmbr);
-
+int    dot_flag_helper_I(char *s, int i, va_list ap, t_num nmbr);
+int    dot_flag_helper_II(char *s, int i, va_list ap, t_num nmbr);
+t_num   for_dot_flag(char *s, int i, va_list ap, t_num nmbr);
+int		dot_flag_helper_III(char *s, int i, va_list ap);
+int		dot_flag_helper_IIII(char *s, int i, va_list ap);
 #endif

@@ -6,7 +6,7 @@
 /*   By: molabhai <molabhai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/09 21:08:51 by molabhai          #+#    #+#             */
-/*   Updated: 2019/11/16 09:57:22 by molabhai         ###   ########.fr       */
+/*   Updated: 2019/11/17 17:20:28 by molabhai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		flag_zero(char *s, int i, va_list ap, char *str, t_num nmbr)
 	int only_numbers;
 	int j;
 	int k;
-
+	
 	only_numbers = 0;
 	str_len = nmbr.len;
 	j = i;
@@ -138,58 +138,37 @@ int		width_flags(char *s, int i, va_list ap, t_num width, char *number)
 
 int		dot_flag(char *s, int i, va_list ap, t_num nmbr)
 {
-	int	j;
-	int k;
 	int width_between;
-	int width_len;
-	int after_dot_len;
-//	char *str;
 
-	width_len = 0;
 	width_between = 0;
-	after_dot_len = 0;
 	if (ft_isdigit(s[i]))
 	{
-		j = i;
-		while (ft_isdigit(s[j]))
-			j++;
-		width_between = j - i;
-		width_len = ft_atoi(ft_substr(s, i, j - 1));
-		if (ft_isdigit(s[j + 1]))
-		{
-			k = j + 1;
-			while (ft_isdigit(s[k]))
-				k++;
-			after_dot_len = ft_atoi(ft_substr(s, j + 1, k - 1));
-			width_between += k - j + 1;
-		}
-		nmbr.num = va_arg(ap, int);
-		nmbr.len = nmbr_count(nmbr.num);
-		if (width_len < after_dot_len)
-		{
-			while (after_dot_len > nmbr.len)
-			{
-				write(1, "0", 1);
-				after_dot_len--;
-			}
-		}
-		else if (width_len > after_dot_len &&  width_len > nmbr.len)
-		{
-			if (after_dot_len <= nmbr.len)
-				after_dot_len = nmbr.len;
-			while (width_len > after_dot_len)
-			{
-				write(1, " ", 1);
-				width_len--;
-			}
-			while(after_dot_len > nmbr.len)
-			{
-				write(1, "0", 1);
-				after_dot_len--;
-			}
-		}
-		just_converting_int(s, k, ap, 0, nmbr.num, 0);
-		return(width_between + 1);
+		if (check_for_convertion(s, i) == 6)
+			width_between = dot_flag_helper_III(s, i, ap);
+		else	
+			width_between =  dot_flag_helper_I(s, i, ap, nmbr);
+		return (width_between + 1);
 	}
-	return(width_between );
+	if (check_for_convertion(s, i) == 6 && ft_isdigit(s[i + 1]))
+	{
+		width_between = dot_flag_helper_IIII(s, i, ap);	
+		return (width_between + 1);
+	}
+	else if (ft_isdigit(s[i + 1]))
+	{
+		width_between = dot_flag_helper_II(s, i, ap, nmbr);
+		return (width_between + 1);
+	}
+	if (s[i] == '.' &&  !ft_isdigit(s[i - 1]) && !ft_isdigit(s[i + 1]))
+	{
+		width_between = 2;
+		if (check_for_convertion(s, i) == 6)
+			width_between = dot_flag_helper_IIII(s, i, ap);	
+		else
+		{
+			nmbr = for_dot_flag(s, i + 1, ap, nmbr);
+			just_converting_int(s, i + 1, ap, 0, nmbr.only_numbers, 0);
+		}
+	}
+	return(width_between + 1);
 }
