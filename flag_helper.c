@@ -6,211 +6,140 @@
 /*   By: molabhai <molabhai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/16 00:17:48 by molabhai          #+#    #+#             */
-/*   Updated: 2019/11/17 17:25:00 by molabhai         ###   ########.fr       */
+/*   Updated: 2019/11/26 21:28:22 by molabhai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "ft_printf.h"
 
-int     for_digit_flag(char *s, int i, va_list ap, t_num nmbr)
-{
-    char *number;
-    int    flag_num;
-    int     who;
-    int     j;
-    char *ss;
-
-    j = 0;
-	if (check_for_star(s, i) == 1)
-	{
-		nmbr.only_numbers = va_arg(ap, int);
-		i += 1;
-		j = 1;
-	}
-	who = check_for_convertion(s, i);
-	if (who == 1)
-	{
-		nmbr.num = va_arg(ap, int);
-		nmbr.len = nmbr_count(nmbr.num);
-		number = ft_itoa(nmbr.num);
-		if (number[0] == '-')
-			nmbr.len += 1;
-		flag_num = 	width_flags(s, i, ap, nmbr, number);
-	}
-	if (who == 2)
-	{
-		nmbr.l_num = va_arg(ap, long);
-		nmbr.len = nmbr_count(nmbr.l_num);
-		number = ft_itoa(nmbr.l_num);
-		flag_num = width_flags(s, i, ap, nmbr, number);
-	}
-	if (who == 3 || who == 4)
-	{
-		nmbr.u_num = va_arg(ap, unsigned int);
-		nmbr.len = nmbr_count(nmbr.u_num);
-		if (nmbr.len == 10)
-			nmbr.len -= 2;
-		else
-			nmbr.len -= 1;
-		flag_num = width_flags(s, i, ap, nmbr, NULL);
-	}
-	if (who == 5)
-	{
-		nmbr.ul_num = va_arg(ap, unsigned long);
-		nmbr.len = nmbr_count(nmbr.ul_num) + 1;
-		flag_num = width_flags(s, i, ap, nmbr, NULL);
-	}
-	if (who == 6)
-	{
-		ss = ft_strdup(va_arg(ap, char *));
-		nmbr.len = ft_strlen(ss);
-		flag_num = width_flags(s, i, ap, nmbr, ss);
-	}
-	if (who == 7)
-	{
-		nmbr.len = 1;
-		flag_num = width_flags(s, i, ap, nmbr, NULL);
-	}
-	if (j == 1)
-		flag_num += 1;
-    return (flag_num);
-}
-
-int     for_left_flag(char *s, int i, va_list ap, t_num nmbr)
-{
- 	char *number;
-    int    flag_num;
-    int     who;
-    int     j;
-    char *ss;
-
-	j = 0;
-		if (check_for_star(s, i + 1) == 1)
-		{
-			nmbr.only_numbers = va_arg(ap, int);
-				i += 1;
-				j = 1;
-		}
-		who = check_for_convertion(s, i);
-		if (who == 1)
-		{
-			nmbr.num = va_arg(ap, int);
-			nmbr.len = nmbr_count(nmbr.num);
-			number = ft_itoa(nmbr.num);
-			flag_num = left_flag(s, i + 1, ap, nmbr, number);
-		}
-		if (who == 2)
-		{
-			nmbr.l_num = va_arg(ap, long);
-			nmbr.len = nmbr_count(nmbr.l_num);
-			number = ft_itoa(nmbr.l_num);
-			flag_num = left_flag(s, i + 1, ap, nmbr, number);
-		}
-		if (who == 3 || who == 4)
-		{
-			nmbr.u_num = va_arg(ap, unsigned int);
-			nmbr.len = nmbr_count(nmbr.u_num);
-			if (nmbr.len == 10)
-				nmbr.len -= 2;
-			else
-				nmbr.len -= 1;	
-			number = ul_itoi(nmbr.u_num);
-			flag_num = left_flag(s, i + 1, ap, nmbr, number);
-		}
-		if (who == 5)
-		{
-			nmbr.ul_num = va_arg(ap, unsigned long);
-			nmbr.len = nmbr_count(nmbr.ul_num) + 1;
-			flag_num = left_flag(s, i + 1, ap, nmbr, number);
-		}
-		if (who == 6)
-		{
-			ss = ft_strdup(va_arg(ap, char *));
-			nmbr.len = ft_strlen(ss);
-			flag_num = left_flag(s, i + 1, ap, nmbr, ss);
-		}
-		if (who == 7)
-		{
-			nmbr.len = 1;
-			flag_num = left_flag(s, i + 1, ap, nmbr, NULL);
-		}
-		if (j == 1)
-			flag_num +=  1;
-	return (flag_num);
-}
-
-int		for_zero_flag(char *s, int i, va_list ap, t_num nmbr)
+int		after_dot_flag(char *s, int i, va_list ap, t_num nmbr)
 {
 	int j;
-	char *number;
-	int who;
-	unsigned long k;
-	int flag_num;
+	int after_width;
+	int width;
 
-	k = 0;
-	j = 0;
-	if (check_for_star(s, i) == 1)
+	j = i;
+	width = 0;
+	while_after_dot(&width, s, &after_width, &j);
+	if (width == 0 && check_for_star(s, i))
 	{
-		nmbr.only_numbers = va_arg(ap, int);
-		i += 1;
-		j = 1;
+		width = va_arg(ap, int);
+		j += 1;
 	}
-	who = check_for_convertion(s, i);
-	if (who == 1)
+	nmbr = wich_conversion(s, i, ap, nmbr);
+	if (nmbr.num < 0)
 	{
-		k = va_arg(ap, int);
-		nmbr.len = nmbr_count(k);
-		number = ft_itoa(k);
-		//printf("number == %s\n", number);
+		nmbr.num = -nmbr.num;
+		putstr_ret("-");
 	}
-	if (who == 3 || who == 4)
-	{
-		k = va_arg(ap, unsigned int);
-		nmbr.len = nmbr_count(k);
-		if (nmbr.len == 10)
-			nmbr.len -= 2;
-		else
-			nmbr.len -= 1;
-		number = ul_itoi(k);
-	}
-	if (who == 2)
-	{
-		k = va_arg(ap, long);
-		nmbr.len = nmbr_count(k);
-		number = ft_itoa(k);
-	}
-	flag_num = flag_zero((char *)s, i, ap, number, nmbr);
-	if (j == 1)
-		flag_num += 1;
-	return (flag_num);
+	if (nmbr.num == 0)
+		width += 1;
+	while (width-- > nmbr.len)
+		putstr_ret("0");
+	if (!(nmbr.num == 0))
+		just_converting_int_f(s, j, nmbr);
+	return (j - i + 3);
 }
 
-t_num		for_dot_flag(char *s, int i, va_list ap, t_num nmbr)
+int		s_after_dot_flag(char *s, int i, va_list ap)
 {
-	int who;
+	int		j;
+	int		width;
+	char	*str;
+	int		y;
 
-	who = 0;
-	who = check_for_convertion(s, i);
-	nmbr.only_numbers = 0;
-	if (who == 1)
+	j = i;
+	y = 0;
+	width = 0;
+	while (ft_isdigit(s[j]))
+		j++;
+	width = ft_atoi(ft_substr(s, i, j - 1));
+	if (width == 0 && check_for_star(s, i))
 	{
-		nmbr.only_numbers = va_arg(ap, int);
-		nmbr.len = nmbr_count(nmbr.only_numbers);
+		width = va_arg(ap, int);
+		j += 1;
 	}
-	else if (who == 2)
+	str = va_arg(ap, char *);
+	s_precision(str, width, y);
+	return (j - i + 3);
+}
+
+int		left_flag_one(char *s, int i, va_list ap, t_num nmbr)
+{
+	int j;
+	int width;
+	int z;
+
+	width = 0;
+	z = 0;
+	z = while_left_flag(s, &i, z);
+	j = i;
+	while (ft_isdigit(s[j]))
+		j++;
+	width = ft_atoi(ft_substr(s, i, j - 1));
+	if (width == 0 && check_for_star(s, i))
 	{
-		nmbr.only_numbers = va_arg(ap, long);
-		nmbr.len = nmbr_count(nmbr.only_numbers);
+		width = va_arg(ap, int);
+		j += 1;
 	}
-	else if (who == 3 || who == 4)
+	nmbr = wich_conversion(s, i, ap, nmbr);
+	just_converting_int_f(s, j, nmbr);
+	if (nmbr.num < 0)
+		nmbr.len += 1;
+	while (width-- > nmbr.len)
+		putstr_ret(" ");
+	return (j - i + z + 2);
+}
+
+int		left_flag_two(char *s, int i, va_list ap)
+{
+	int j;
+	int width;
+	int k;
+	int z;
+
+	k = 0;
+	z = s_left_flag_helper(&width, s, &i, &j);
+	if (width == 0 && check_for_star(s, i))
 	{
-		nmbr.only_numbers= va_arg(ap, unsigned int );
-		nmbr.len = nmbr_count(nmbr.only_numbers);
-		if (nmbr.len == 10)
-			nmbr.len -= 2;
-		else
-			nmbr.len -= 1;
+		width = va_arg(ap, int);
+		j += 1;
 	}
-	return (nmbr);
+	if (check_for_convertion(s, j) == 7)
+	{
+		just_converting_char(s, j, ap, NULL);
+		while (width-- > 1)
+			putstr_ret(" ");
+	}
+	else
+		s_left_flag_helper_two(s, ap, j, width);
+	return (j - i + z + 2);
+}
+
+int		zero_flag_one(char *s, int i, va_list ap, t_num nmbr)
+{
+	int j;
+	int width;
+
+	j = i;
+	width = 0;
+	while (ft_isdigit(s[j]))
+		j++;
+	width = ft_atoi(ft_substr(s, i, j - 1));
+	if (width == 0 && check_for_star(s, i))
+	{
+		width = va_arg(ap, int);
+		j += 1;
+	}
+	nmbr = wich_conversion(s, i, ap, nmbr);
+	if (nmbr.num < 0)
+	{
+		nmbr.num = nmbr.num * (-1);
+		nmbr.len += 1;
+		putstr_ret("-");
+	}
+	while (width-- > nmbr.len)
+		putstr_ret("0");
+	just_converting_int_f(s, j, nmbr);
+	return (j - i + 3);
 }

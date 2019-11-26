@@ -6,50 +6,41 @@
 /*   By: molabhai <molabhai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 20:26:46 by molabhai          #+#    #+#             */
-/*   Updated: 2019/11/12 20:55:20 by molabhai         ###   ########.fr       */
+/*   Updated: 2019/11/26 21:45:59 by molabhai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "ft_printf.h"
 
-void	char_conversion(char c)
+void			char_conversion(char c)
 {
-	write(1, &c, 1);
+	putchar_ret(c);
 }
 
-int		string_conversion(char *s)
-{
-	int i;
-
-	i = 0;
-	while (s[i] != '\0')
-	{
-		write(1, &s[i], 1);
-		i++;
-	}
-	return (i);
-}
-
-int		number_conversion(char *nmb, int j)
+int				string_conversion(char *s)
 {
 	int i;
 
 	i = 0;
-	if (j != 0)
-		i = 1;
-	while (nmb[i] != '\0')
-	{
-		write(1, &nmb[i], 1);
-		i++;
-	}
+	if (s == NULL)
+		putstr_ret("(null)");
+	i = putstr_ret(s);
 	return (i);
 }
 
-static char		return_hex_p(unsigned long	mod_hexa)
+int				number_conversion(char *nmb)
+{
+	int i;
+
+	i = 0;
+	i = putstr_ret(nmb);
+	return (i);
+}
+
+static char		return_hex_p(unsigned long mod_hexa)
 {
 	if (mod_hexa == 10)
-		return ('a'); 
+		return ('a');
 	else if (mod_hexa == 11)
 		return ('b');
 	else if (mod_hexa == 12)
@@ -63,36 +54,28 @@ static char		return_hex_p(unsigned long	mod_hexa)
 	return (0);
 }
 
-int		hexa_conversion_p(unsigned long	hexa)
+void			hexa_conversion_p(unsigned long hexa)
 {
-	int mod_hexa;
-	char *s;
+	int			mod_hexa;
 	static char *test;
-	static int i;
-	static int j;
+	static int	i = 0;
 
 	if (i == 0)
-		if (!(test = (char *)ft_calloc(sizeof(char), (nmbr_count(hexa)) + 1)))
-			return (0);
-	if (hexa == 0)
+		test = (char *)ft_calloc(sizeof(char), (nmbr_count(hexa)) + 1);
+	if (hexa == 0 && i != 0)
 	{
-		j = i;
 		while (i > 0)
 		{
-			write(1, &test [i - 1], 1);
+			putchar_ret(test[i - 1]);
 			i--;
 		}
 		free(test);
-		return (j);
+		return ;
 	}
 	mod_hexa = hexa % 16;
 	if (mod_hexa < 10)
-	{
-		s = ft_itoa(mod_hexa);
-		test[i++] = s[0];
-	}
-	else if (mod_hexa >= 10)
+		test[i++] = mod_hexa + '0';
+	else
 		test[i++] = return_hex_p(mod_hexa);
 	hexa_conversion_p(hexa / 16);
-	return (j);
 }

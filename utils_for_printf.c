@@ -6,78 +6,81 @@
 /*   By: molabhai <molabhai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 17:18:23 by molabhai          #+#    #+#             */
-/*   Updated: 2019/11/15 23:59:49 by molabhai         ###   ########.fr       */
+/*   Updated: 2019/11/26 22:13:53 by molabhai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-
-int       check_for_dot(char *s, int i)
+int				check_for_dot(char *s, int i)
 {
-    int j;
+	int j;
 
-    j = i;
-    while (s[i] != '\0')
-    {
-        if (s[i] == '.')
-            return (1);
-        i++;
-    }
-    return (0);
+	j = i;
+	while (s[j] != '\0')
+	{
+		if (s[j] == '.')
+			return (1);
+		if (s[j] == '%')
+			return (0);
+		j++;
+	}
+	return (0);
 }
 
-int       check_for_star(char *s, int i)
+int				check_for_star(char *s, int i)
 {
-    int j;
+	int j;
 
-    j = i;
-    if (s[j] == '*')
-        return (1);
-    return (0);
+	j = i;
+	if (s[j] == '*')
+		return (1);
+	return (0);
 }
 
-static unsigned long     len(unsigned long number)
+unsigned long	len(unsigned long number)
 {
-    unsigned long i;
+	unsigned long i;
 
-    i = 0;
-    while (number != 0)
-    {
-        number = number / 10;
-        i++;
-    }
-    return (i);
+	i = 0;
+	if (number == 0)
+		i += 1;
+	while (number != 0)
+	{
+		number = number / 10;
+		i++;
+	}
+	return (i);
 }
 
-static char     *ul_conversion(unsigned long number)
+static char		*ul_conversion(unsigned long number)
 {
-    char *str;
-    char c;
-    int  len_number;
-    int take_number;
+	char	*str;
+	char	c;
+	int		len_number;
+	int		take_number;
 
-    len_number = len(number);
-    take_number = 0;
-    str = NULL;
-    if (!(str = (char *)malloc(sizeof(char) * len_number + 1)))
-        return (NULL);
-    while (len_number > 0)
-    {    
-        take_number = number % 10;
-        c = take_number + '0';
-        str[len_number - 1] = c;
-        number = number / 10;
-        len_number--;
-    }
-    return(str);
+	len_number = len(number);
+	take_number = 0;
+	str = NULL;
+	if (!(str = (char *)malloc(sizeof(char) * len_number + 1)))
+		return (NULL);
+	while (len_number > 0)
+	{
+		take_number = number % 10;
+		c = take_number + '0';
+		str[len_number - 1] = c;
+		number = number / 10;
+		len_number--;
+	}
+	return (str);
 }
 
-char    *ul_itoi(unsigned long  number)
+char			*ul_itoi(unsigned long number)
 {
-    char *str;
+	char *str;
 
-    str = NULL;
-    str = ul_conversion(number);
-    return (str);
+	str = NULL;
+	str = ul_conversion(number);
+	return (str);
 }
