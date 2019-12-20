@@ -3,143 +3,72 @@
 /*                                                        :::      ::::::::   */
 /*   flag_helper.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: molabhai <molabhai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: molabhai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/16 00:17:48 by molabhai          #+#    #+#             */
-/*   Updated: 2019/11/26 21:28:22 by molabhai         ###   ########.fr       */
+/*   Created: 2019/12/18 00:35:38 by molabhai          #+#    #+#             */
+/*   Updated: 2019/12/18 04:56:30 by molabhai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		after_dot_flag(char *s, int i, va_list ap, t_num nmbr)
+int		big_hexa(int l)
 {
-	int j;
-	int after_width;
-	int width;
-
-	j = i;
-	width = 0;
-	while_after_dot(&width, s, &after_width, &j);
-	if (width == 0 && check_for_star(s, i))
-	{
-		width = va_arg(ap, int);
-		j += 1;
-	}
-	nmbr = wich_conversion(s, i, ap, nmbr);
-	if (nmbr.num < 0)
-	{
-		nmbr.num = -nmbr.num;
-		putstr_ret("-");
-	}
-	if (nmbr.num == 0)
-		width += 1;
-	while (width-- > nmbr.len)
-		putstr_ret("0");
-	if (!(nmbr.num == 0))
-		just_converting_int_f(s, j, nmbr);
-	return (j - i + 3);
+	if (l == 10)
+		return ('A');
+	else if (l == 11)
+		return ('B');
+	else if (l == 12)
+		return ('C');
+	else if (l == 13)
+		return ('D');
+	else if (l == 14)
+		return ('E');
+	else if (l == 15)
+		return ('F');
+	return (0);
 }
 
-int		s_after_dot_flag(char *s, int i, va_list ap)
+int		check_for_dot(char *s, int i)
 {
-	int		j;
-	int		width;
-	char	*str;
-	int		y;
-
-	j = i;
-	y = 0;
-	width = 0;
-	while (ft_isdigit(s[j]))
-		j++;
-	width = ft_atoi(ft_substr(s, i, j - 1));
-	if (width == 0 && check_for_star(s, i))
+	while (s[i] != 's' && s[i] != 'c' && s[i] != 'x' && s[i] != 'X' &&
+			s[i] != 'p' && s[i] != 'd' && s[i] != 'p' && s[i] != '\0')
 	{
-		width = va_arg(ap, int);
-		j += 1;
+		if (s[i] == '.')
+			return (1);
+		i++;
 	}
-	str = va_arg(ap, char *);
-	s_precision(str, width, y);
-	return (j - i + 3);
+	return (0);
 }
 
-int		left_flag_one(char *s, int i, va_list ap, t_num nmbr)
+void	str_or_null(t_flag *check, int *i, int *l, char **s)
 {
-	int j;
-	int width;
-	int z;
-
-	width = 0;
-	z = 0;
-	z = while_left_flag(s, &i, z);
-	j = i;
-	while (ft_isdigit(s[j]))
-		j++;
-	width = ft_atoi(ft_substr(s, i, j - 1));
-	if (width == 0 && check_for_star(s, i))
-	{
-		width = va_arg(ap, int);
-		j += 1;
-	}
-	nmbr = wich_conversion(s, i, ap, nmbr);
-	just_converting_int_f(s, j, nmbr);
-	if (nmbr.num < 0)
-		nmbr.len += 1;
-	while (width-- > nmbr.len)
-		putstr_ret(" ");
-	return (j - i + z + 2);
-}
-
-int		left_flag_two(char *s, int i, va_list ap)
-{
-	int j;
-	int width;
-	int k;
-	int z;
-
-	k = 0;
-	z = s_left_flag_helper(&width, s, &i, &j);
-	if (width == 0 && check_for_star(s, i))
-	{
-		width = va_arg(ap, int);
-		j += 1;
-	}
-	if (check_for_convertion(s, j) == 7)
-	{
-		just_converting_char(s, j, ap, NULL);
-		while (width-- > 1)
-			putstr_ret(" ");
-	}
+	if (check->str_conversion == NULL)
+		*i = 6;
 	else
-		s_left_flag_helper_two(s, ap, j, width);
-	return (j - i + z + 2);
+		*i = ft_strlen(check->str_conversion);
+	if (*l < 0 || *l >= *i)
+		*l = *i;
+	if (check->str_conversion == NULL)
+		*s = ft_strdup("(null)");
+	else
+		*s = ft_strdup(check->str_conversion);
+	*i = 0;
 }
 
-int		zero_flag_one(char *s, int i, va_list ap, t_num nmbr)
+void	before_equal_after(t_flag *check)
 {
-	int j;
-	int width;
+	if (!(check->wich_conversion == 5))
+		check->zero = 1;
+	if (check->int_conversion == 0 && check->unsigned_conversion == 0 &&
+			check->hexa_conversion == 0)
+		check->nmbr_len = 0;
+}
 
-	j = i;
-	width = 0;
-	while (ft_isdigit(s[j]))
-		j++;
-	width = ft_atoi(ft_substr(s, i, j - 1));
-	if (width == 0 && check_for_star(s, i))
-	{
-		width = va_arg(ap, int);
-		j += 1;
-	}
-	nmbr = wich_conversion(s, i, ap, nmbr);
-	if (nmbr.num < 0)
-	{
-		nmbr.num = nmbr.num * (-1);
-		nmbr.len += 1;
-		putstr_ret("-");
-	}
-	while (width-- > nmbr.len)
-		putstr_ret("0");
-	just_converting_int_f(s, j, nmbr);
-	return (j - i + 3);
+void	before_less_after(t_flag *check)
+{
+	check->zero = 1;
+	if (check->int_conversion == 0 && check->unsigned_conversion == 0 &&
+			check->hexa_conversion == 0 && check->wich_conversion != 5)
+		check->nmbr_len = 0;
 }

@@ -3,102 +3,87 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: molabhai <molabhai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: molabhai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/06 18:06:12 by molabhai          #+#    #+#             */
-/*   Updated: 2019/11/26 20:41:06 by molabhai         ###   ########.fr       */
+/*   Created: 2019/12/14 16:42:37 by molabhai          #+#    #+#             */
+/*   Updated: 2019/12/18 05:36:39 by molabhai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
-#include "./libft/libft.h"
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
-#include <fcntl.h>
-#include <stdarg.h>
+# include <stdarg.h>
+# include <unistd.h>
+# include <stdlib.h>
 
-typedef     struct      s_numbers
+typedef struct		s_flag
 {
-    long num;
-    long only_numbers;
-    unsigned int u_num;
-    long  l_num;
-    unsigned long ul_num;
-    int len;
-    int dot_flag;
-    int convert_pos;
-    int string_len;
-    char c;
-}                       t_num;
+	int					zero;
+	int					minus;
+	int					dot;
+	int					nmbr_len;
+	int					len_before_flag;
+	int					len_after_flag;
+	int					wich_conversion;
+	long				int_conversion;
+	unsigned int		hexa_conversion;
+	unsigned int		unsigned_conversion;
+	char				char_conversion;
+	unsigned long long	adress_conversion;
+	char				*str_conversion;
+}					t_flag;
 
-int     check_for_star(char *s, int i);
-int		ft_printf(const char *, ...);
-void	char_conversion(char c);
-int		string_conversion(char *s);
-int		number_conversion(char *s);
-void	hexa_conversion_min(unsigned int hexa);
-void	hexa_conversion_big(unsigned int hexa);
-void	hexa_conversion_p(unsigned long hexa);
-int		nmbr_count(long hexa);	
-int		unsigned_conversion(unsigned long pbe);
-int     just_converting_int(char *s, int i, va_list ap);
-int		just_converting_char(char *s, int i, va_list ap, char *str);
-char    *ul_itoi(unsigned long number);
-int     check_for_dot(char *s, int i);
-int		check_for_convertion(char *s, int i);
-int		dot_flag(char *s, int i, va_list ap, t_num nmbr);
-int    putstr_ret(char *s);
-int		after_befor_dot_flag(char *s, int i, va_list ap, t_num nmbr);
-int     check_for_hyphien(char *s, int i);
-int     hyphien_dot_flag(char *s, int i, va_list ap, t_num nmbr);
-int		string_dot_flag(char *s, int i, va_list ap, t_num nmbr);
-int     after_dot_flag(char *s, int i, va_list ap, t_num nmbr);
-t_num		wich_conversion(char *s, int i, va_list ap, t_num nmbr);
-int     s_after_dot_flag(char *s, int i, va_list ap);
-int     left_flag_one(char *s, int i, va_list ap, t_num nmbr);
-int		left_flag(char *s, int i, va_list ap, t_num nmbr);
-int    left_flag_two(char *s, int i, va_list ap);
-int     zero_flag(char *s, int i, va_list ap, t_num nmbr);
-int     zero_flag_one(char *s, int i, va_list ap, t_num nmbr);
-int		digit_flag(char *s, int i, va_list ap, t_num nmbr);
-int     digit_flag_one(char *s, int i, va_list ap, t_num nmbr);
-int     digit_flag_two(char *s, int i, va_list ap, t_num nmbr);
-unsigned long     len(unsigned long number);
-int     putchar_ret(char c);
-int     zero_flag_mod(char *s, int i, va_list ap);
-int     check_for_modulo(char *s, int i);
-int     digit_flag_mod(char *s, int i, va_list ap);
-int     left_flag_mod(char *s, int i, va_list ap);
-int     dot_flag_mod(char *s, int i, va_list ap);
-int     just_converting_int_f(char *s, int i, t_num d);
-void    hyphien_execute(int k, int width_len, t_num nmbr, char *str);
-t_num		first_to_use(int width_len, int k, t_num nmbr);
-int     for_hyphien_flag(char *s, int *i, int *j, int *width_len);
-int		for_hyphien_flag_two(int *k, char *s, int j, t_num *nmbr);
-void    string_dot_helper(char *str, int width_len, int k);
-int		string_before_dot(char *s, va_list ap, int *width_len, int *j);
-int     helper_before_dot(char *s, int *j, va_list ap, int *width_len);
-void    helper_after_dot(char *s, int k, int width_len, t_num nmbr);
-void    to_use_zero(int k, int width, t_num *nmbr);
-void    to_use_space_zero(int k, int width, t_num *nmbr);
-void	wich_hexa(t_num *nmbr, va_list ap);
-void	wich_hexa_p(t_num *nmbr, va_list ap);
-void     s_precision(char *str, int width, int y);
-int     s_left_flag_helper(int *width, char *s, int *i, int *j);
-void    s_left_flag_helper_two(char *s, va_list ap, int j, int width);
-int     while_left_flag(char *s, int *i, int z);
-void    while_after_dot(int *width, char *s, int *after_width, int *j);
-void    for_digit_flag(int width);
-void    for_digit_flag_two(int width, t_num nmbr);
-void    while_for_digit_flag(char *s, int *j, int *width);
-void    null_digit_flag(char *str, int width);
-void    star_digit_flag(int *width, char *s, va_list ap, int *j);
-int    mod_helper(char *s, int *j, va_list ap, int *width_len);
-void	hexa_p_helper(char *s, int i);
-void	digit_helper(char *s, int j, int width, t_num nmbr);
-void	hexa_p_helper(char *test, int i);
+int					ft_printf(const char *s, ...);
+void				put_nmbr(long i);
+void				ft_putchar(char c);
+int					nmbr_len(long i);
+int					convert_hexa(unsigned int i, int z, int y);
+int					print_char(int c);
+int					print_string(char *s);
+int					print_hexa(unsigned int i, int z);
+int					print_int(int i);
+int					print_unsigned_int(unsigned int i);
+int					print_hex_adress(unsigned long long i, int z);
+void				revers_print(char *str, int k);
+int					hexa_convert(int l, int z);
+int					print_mod();
+void				take_conversion(char *s, int i, t_flag *check, va_list ap);
+void				put_flag(char *s, int *i, t_flag *check, va_list ap);
+int					conversion_for_print(char *s, int i);
+int					print_conversion(t_flag *check);
+int					check_for_dot(char *s, int i);
+void				dot_flag(t_flag *check, int *m, int *l);
+void				minus_flag(t_flag *check, int m, int l);
+void				no_zero_no_minus(t_flag *check, int m, int l);
+void				flag_zero(t_flag *check, int l);
+int					big_hexa(int l);
+void				str_or_null(t_flag *check, int *i, int *l, char **s);
+void				before_equal_after(t_flag *check);
+void				before_less_after(t_flag *check);
+void				check_minus_dot(int *m, int *l, t_flag *check);
+void				put_for_dot(void);
+void				take_char(t_flag *check, va_list ap);
+void				take_string(t_flag *check, va_list ap);
+void				take_hexa(t_flag *check, va_list ap);
+void				take_unsigned(t_flag *check, va_list ap);
+void				take_adress(t_flag *check, va_list ap);
+void				put_flag_one(t_flag *check);
+void				put_flag_two(t_flag *check);
+void				put_flag_three(t_flag *check);
+void				put_it(t_flag *check, int *i, char *s, va_list ap);
+void				flag_checker(char *s, int *i, t_flag *check);
+void				take_len(char *s, int *i, t_flag *check, va_list ap);
+void				take_conversio(char *s, int i, t_flag *check, va_list ap);
+int					check_condition_one(t_flag *check);
+int					check_condition_two(t_flag *check);
+int					check_condition_three(t_flag *check);
+int					check_condition_four(t_flag *check);
+void				*ft_memset(void *s, int c, size_t len);
+int					ft_isdigit(int c);
+char				*ft_strdup(char *s);
+size_t				ft_strlen(char const *s);
+int					ft_atoi(char const *s);
+void				ft_bzero(void *s, size_t n);
+void				*ft_calloc(size_t c, size_t size);
 #endif

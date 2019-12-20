@@ -3,134 +3,109 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: molabhai <molabhai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: molabhai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/06 16:21:45 by molabhai          #+#    #+#             */
-/*   Updated: 2019/11/26 21:59:21 by molabhai         ###   ########.fr       */
+/*   Created: 2019/12/14 16:39:56 by molabhai          #+#    #+#             */
+/*   Updated: 2019/12/18 04:53:41 by molabhai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "./libft/libft.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <string.h>
 
-int		just_converting_char(char *s, int i, va_list ap, char *str)
+int g_i;
+
+static	void	all_in(t_flag check)
 {
-	if (s[i] != 's' && s[i] != 'c')
-		return (0);
-	if (s[i] == 's')
+	if (check.adress_conversion == 0 && check.wich_conversion == 5 &&
+			check.dot == 1 && check.minus == 0)
 	{
-		if (str != NULL)
-			i = string_conversion(str);
-		else
-			i = string_conversion(va_arg(ap, char *));
-		return (2);
+		ft_putchar('0');
+		ft_putchar('x');
 	}
-	else if (s[i] == 'c')
+	if (check.int_conversion == 0 && check.unsigned_conversion == 0 &&
+			check.hexa_conversion == 0 && check.dot == 1 &&
+			check.wich_conversion != 0 && check.adress_conversion == 0
+			&& check.wich_conversion != 8)
+		check.minus = 1;
+	if (check.minus == 0)
+		print_conversion(&check);
+}
+
+int				conversion_for_print(char *s, int i)
+{
+	int		j;
+	char	*str;
+	int		k;
+
+	j = i + 1;
+	str = "csxXupdi%";
+	while (s[j])
 	{
-		char_conversion(va_arg(ap, int));
-		return (2);
+		k = 0;
+		while (str[k])
+		{
+			if (str[k] == s[j])
+				return (k);
+			k++;
+		}
+		j++;
 	}
 	return (0);
 }
 
-int		just_converting_int(char *s, int i, va_list ap)
+int				print_conversion(t_flag *check)
 {
-	char *number;
+	int k;
 
-	if (s[i] == 'd' || s[i] == 'i')
-	{
-		number = ft_itoa(va_arg(ap, int));
-		number_conversion(number);
-	}
-	else if (s[i] == 'x')
-		hexa_conversion_min(va_arg(ap, int));
-	else if (s[i] == 'X')
-		hexa_conversion_big(va_arg(ap, unsigned int));
-	else if (s[i] == 'u')
-		unsigned_conversion(va_arg(ap, unsigned int));
-	else if (s[i] == 'p')
-	{
-		putchar_ret('0');
-		putchar_ret('x');
-		hexa_conversion_p(va_arg(ap, unsigned long));
-	}
-	if (s[i] == 'd' || s[i] == 'i' || s[i] == 'x'
-	|| s[i] == 'X' || s[i] == 'u' || s[i] == 'p')
-		return (2);
+	k = 0;
+	if (check->wich_conversion == 0)
+		k = print_char(check->char_conversion);
+	else if (check->wich_conversion == 1)
+		k = print_string(check->str_conversion);
+	else if (check->wich_conversion == 2)
+		k = print_hexa(check->hexa_conversion, 0);
+	else if (check->wich_conversion == 3)
+		k = print_hexa(check->hexa_conversion, 1);
+	else if (check->wich_conversion == 4)
+		k = print_unsigned_int(check->unsigned_conversion);
+	else if (check->wich_conversion == 5)
+		k = print_hex_adress(check->adress_conversion, 0);
+	else if (check->wich_conversion == 6 || check->wich_conversion == 7)
+		k = print_int(check->int_conversion);
+	else if (check->wich_conversion == 8)
+		k = print_mod();
 	return (0);
 }
 
-int		check_for_convertion(char *s, int i)
+void			ft_putchar(char c)
 {
-	while (s[i] != 'd' || s[i] != 'u' || s[i] != 'x' ||
-	s[i] != 'X' || s[i] != 'i' || s[i] != 's' || s[i] != 'p' || s[i] != 'c')
-	{
-		if (s[i] == 'd' || s[i] == 'i')
-			return (1);
-		else if (s[i] == 'u')
-			return (2);
-		else if (s[i] == 'x')
-			return (3);
-		else if (s[i] == 'X')
-			return (4);
-		else if (s[i] == 'p')
-			return (5);
-		else if (s[i] == 's')
-			return (6);
-		else if (s[i] == 'c')
-			return (7);
-		i++;
-	}
-	return (0);
+	write(1, &c, 1);
+	g_i++;
 }
 
-int		if_flags(char *s, int i, va_list ap)
+int				ft_printf(const char *s, ...)
 {
-	int		flag_num;
-	t_num	nmbr;
-
-	flag_num = 0;
-	nmbr.only_numbers = 0;
-	if (check_for_dot(s, i) == 1)
-		flag_num = dot_flag(s, i, ap, nmbr);
-	else if (s[i] == '-')
-		flag_num = left_flag(s, i, ap, nmbr);
-	else if (s[i] == '0')
-		flag_num = zero_flag(s, i, ap, nmbr);
-	else if (ft_isdigit(s[i]) || check_for_star(s, i))
-		flag_num = digit_flag(s, i, ap, nmbr);
-	return (flag_num);
-}
-
-int		ft_printf(const char *s, ...)
-{
+	va_list ap;
 	int		i;
-	va_list	ap;
+	t_flag	check;
 
-	va_start(ap, s);
 	i = 0;
+	g_i = 0;
+	va_start(ap, s);
 	while (s[i] != '\0')
 	{
 		if (s[i] == '%')
-			i = if_flags((char *)s, i + 1, ap) + i;
-		if (s[i] == '%')
 		{
-			if (s[i + 1] == '%')
-				i = putchar_ret('%') + i + 1;
-			i = just_converting_char((char *)s, i + 1, ap, NULL) + i;
-			i = just_converting_int((char *)s, i + 1, ap) + i;
+			ft_memset(&check, 0, sizeof(t_flag ));
+			put_flag((char *)s, &i, &check, ap);
+			all_in(check);
 		}
 		if (s[i] != '%' && s[i] != '\0')
 		{
-			putchar_ret(s[i]);
+			ft_putchar(s[i]);
 			i++;
 		}
 	}
 	va_end(ap);
-	i = putstr_ret(NULL) + putchar_ret(0);
-	return (i);
+	return (g_i);
 }
